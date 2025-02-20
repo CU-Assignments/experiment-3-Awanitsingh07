@@ -1,0 +1,159 @@
+import java.util.Scanner;
+
+public class SquareRootCalculator {
+
+public static void main(String[] args) {
+Scanner scanner = new Scanner(System.in);
+
+try {
+System.out.print("Enter a number: ");
+String input = scanner.nextLine();
+double number = Double.parseDouble(input);
+
+if (number < 0) {
+System.out.println("Error: Cannot calculate the square root of a negative number.");
+} else {
+double squareRoot = Math.sqrt(number);
+System.out.println("The square root of " + number + " is: " + squareRoot);
+}
+
+} catch (NumberFormatException e) {
+System.out.println("Error: Invalid input. Please enter a valid number.");
+} finally {
+scanner.close();
+}
+}
+}
+
+import java.util.Scanner;
+
+public class ATMWithdrawalSystem {
+
+public static void main(String[] args) {
+Scanner scanner = new Scanner(System.in);
+
+int correctPIN = 1234;
+double balance = 3000;
+
+try {
+System.out.print("Enter PIN: ");
+int enteredPIN = scanner.nextInt();
+
+if (enteredPIN != correctPIN) {
+throw new InvalidPINException("Error: Invalid PIN.");
+}
+
+System.out.print("Withdraw Amount: ");
+double withdrawAmount = scanner.nextDouble();
+
+if (withdrawAmount > balance) {
+throw new InsufficientBalanceException("Error: Insufficient balance.");
+}
+
+balance -= withdrawAmount;
+System.out.println("Withdrawal successful. Remaining balance: " + balance);
+
+} catch (InvalidPINException e) {
+System.out.println(e.getMessage());
+System.out.println("Current Balance: " + balance);
+
+} catch (InsufficientBalanceException e) {
+System.out.println(e.getMessage());
+System.out.println("Current Balance: " + balance);
+
+} catch (Exception e) {
+System.out.println("Error: An unexpected error occurred.");
+} finally {
+scanner.close();
+}
+}
+}
+
+class InvalidPINException extends Exception {
+public InvalidPINException(String message) {
+super(message);
+}
+}
+
+class InsufficientBalanceException extends Exception {
+public InsufficientBalanceException(String message) {
+super(message);
+}
+}
+
+import java.util.HashSet;
+import java.util.Scanner;
+import java.util.Set;
+
+public class UniversityEnrollmentSystem {
+
+public static void main(String[] args) {
+Scanner scanner = new Scanner(System.in);
+
+Set<String> completedCourses = new HashSet<>();
+completedCourses.add("Core Java");
+
+Course advancedJava = new Course("Advanced Java", 2); // Course with max enrollment limit 2
+Course coreJava = new Course("Core Java", 5); // Course with max enrollment limit 5
+
+try {
+System.out.print("Enroll in Course: ");
+String courseName = scanner.nextLine();
+
+if (courseName.equals("Advanced Java")) {
+System.out.print("Prerequisite: Core Java\nStatus: ");
+String status = scanner.nextLine();
+
+if (!completedCourses.contains("Core Java")) {
+throw new PrerequisiteNotMetException("Complete Core Java before enrolling in Advanced Java.");
+}
+
+advancedJava.enrollStudent();
+} else if (courseName.equals("Core Java")) {
+coreJava.enrollStudent();
+} else {
+System.out.println("Course not available.");
+}
+} catch (CourseFullException e) {
+System.out.println("Error: " + e.getMessage());
+} catch (PrerequisiteNotMetException e) {
+System.out.println("Error: " + e.getMessage());
+} catch (Exception e) {
+System.out.println("Unexpected error: " + e.getMessage());
+} finally {
+scanner.close();
+}
+}
+}
+
+class Course {
+private String name;
+private int maxEnrollment;
+private int currentEnrollment;
+
+public Course(String name, int maxEnrollment) {
+this.name = name;
+this.maxEnrollment = maxEnrollment;
+this.currentEnrollment = 0;
+}
+
+public void enrollStudent() throws CourseFullException {
+if (currentEnrollment >= maxEnrollment) {
+throw new CourseFullException("Course " + name + " is full. Enrollment limit reached.");
+}
+currentEnrollment++;
+System.out.println("Successfully enrolled in " + name + ". Current Enrollment: " + currentEnrollment);
+}
+}
+
+class CourseFullException extends Exception {
+public CourseFullException(String message) {
+super(message);
+}
+}
+
+class PrerequisiteNotMetException extends Exception {
+public PrerequisiteNotMetException(String message) {
+super(message);
+}
+}
